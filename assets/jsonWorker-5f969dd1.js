@@ -1,0 +1,3 @@
+(function(){"use strict";const t=[],n=[];let s="",o=!1;const i=3e5,a={PROGRESS:e=>{o||(console.time("START PROGRESS PARSE JSON"),o=!0),s+=new TextDecoder().decode(e);let S=s.indexOf(`
+`);for(;~S;){const c=s.slice(0,S);t.push(c),s=s.slice(S+1),S=s.indexOf(`
+`)}t.length>i&&([].concat(t).map(l=>n.push(JSON.parse(l))),t.length=0)},END:()=>{t.length&&(t.map(e=>n.push(JSON.parse(e))),t.length=0),n.map(e=>(e.reueqstDate=new Date(e.reueqstDate),e)),console.timeEnd("START PROGRESS PARSE JSON"),console.time("JSON WORKER POST MESSAGE"),postMessage(n),console.timeEnd("JSON WORKER POST MESSAGE")}};addEventListener("message",async function(e){e.data.type?a[e.data.type].apply(self,e.data.queryArgs):a.PROGRESS(e.data)})})();
